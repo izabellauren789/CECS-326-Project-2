@@ -11,6 +11,9 @@ public class DiningPhilosophers
 {  
    public static void main(String args[])
    {
-     // Here your code
+     /*pseudocode
+      * Philosopher call takeForks
+         philosopher call returnForks
+      */
    }
 }
