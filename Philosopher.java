@@ -1,11 +1,8 @@
 /**
  * Philosopher.java
- *
  * This class represents each philosopher thread.
  * Philosophers alternate between eating and thinking.
- *
  */
-
 
 public class Philosopher implements Runnable
 {
@@ -18,5 +15,7 @@ public class Philosopher implements Runnable
      * Thread t4 = new Thread();
      * 
         each thread sleep for random period between 1 and 3
+        lock for thinking and eating
      */
+
 }
