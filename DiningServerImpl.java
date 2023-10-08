@@ -1,36 +1,42 @@
+
 /**
  * DiningServer.java
  * This class contains the methods called by the  philosophers.
  */
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
-public class DiningServerImpl  implements DiningServer
-{
-	public void takeForks( int PhilNUmber){
-		
+public class DiningServerImpl implements DiningServer {
+	private Semaphore[] forks;
+	private Semaphore mutex;
+
+	public DiningServerImpl(int numPhils) {
+		forks = new Semaphore[numPhils];
+		for (int i = 0; i < numPhils; i++) {
+			forks[i] = new Semaphore(1);
+		}
+		mutex = new Semaphore(1);
 	}
 
-	public void returnForks(int philNumber){
-		
+	public void takeForks(int philID) {
+		try {
+			mutex.acquire();
+			forks[philID].acquire();
+			forks[(philID + 1) % forks.length].acquire();
+			mutex.release();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
-	//private ReentrantLock lockObj = new ReentrantLock();
-	/*psuedocode
-	 * Thread t1 = new Threads();
-	 */
-	do{
-		wait(philosopher[i]);
-		wait(philosopher[(i+1)%5]); //need to access adjacent
 
-		//eat
-		signal(philosopher[i]);
-		signal(philosopher[(i+1)%5]); //need to access adjacent
-		//think
-		
-
-	}while(true);
-	//only max two people can eat at once
-	//odd/even philosophers 
+	public void returnForks(int philID) {
+		try {
+			mutex.acquire();
+			forks[philID].release();
+			forks[(philID + 1) % forks.length].release();
+			mutex.release();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }

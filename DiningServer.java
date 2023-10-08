@@ -1,14 +1,13 @@
 /**
  * DiningServer.java
  * Project 2
- * This class contains the methods called by the  philosophers.
+ * This class contains the methods called by the philosophers.
  * You are flexible to change it, here only display a sample
  */
-public interface DiningServer 
-{  
-   // called by a philosopher when they wish to eat 
-   public void takeForks(int philNumber);
-  
-   // called by a philosopher when they are finished eating 
-   public void returnForks(int philNumber);
+public interface DiningServer {
+   // called by a philosopher when they wish to eat
+   void takeForks(int philID);
+
+   // called by a philosopher when they are finished eating
+   void returnForks(int philID);
 }
