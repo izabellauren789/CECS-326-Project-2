@@ -9,6 +9,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class DiningServerImpl  implements DiningServer
 {
+	public void takeForks( int PhilNUmber){
+		
+	}
+
+	public void returnForks(int philNumber){
+		
+	}
 	//private ReentrantLock lockObj = new ReentrantLock();
 	/*psuedocode
 	 * Thread t1 = new Threads();
