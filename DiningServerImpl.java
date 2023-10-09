@@ -24,6 +24,8 @@ public class DiningServerImpl implements DiningServer {
 			forks[philID].acquire();
 			forks[(philID + 1) % forks.length].acquire();
 			mutex.release();
+			System.out.println("Philosopher" + philID + " takes fork.");
+		
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -35,6 +37,7 @@ public class DiningServerImpl implements DiningServer {
 			forks[philID].release();
 			forks[(philID + 1) % forks.length].release();
 			mutex.release();
+			System.out.println("Philosopher" + philID + " takes fork.");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
