@@ -18,7 +18,7 @@ public class DiningServerImpl implements DiningServer {
 		mutex = new Semaphore(1);
 	}
 
-	public void takeForks(int philID) { //not being called
+	public void takeForks(int philID) { 
 		try {
 			mutex.acquire();
 			forks[philID].acquire();
@@ -29,7 +29,7 @@ public class DiningServerImpl implements DiningServer {
 		}
 	}
 
-	public void returnForks(int philID) { //not being called
+	public void returnForks(int philID) { 
 		try {
 			mutex.acquire();
 			forks[philID].release();
