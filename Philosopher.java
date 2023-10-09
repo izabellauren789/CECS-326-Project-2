@@ -1,8 +1,10 @@
+
 /**
  * Philosopher.java
  * This class represents each philosopher thread.
  * Philosophers alternate between eating and thinking.
  */
+import java.util.Random;
 
 public class Philosopher implements Runnable {
    /*
@@ -32,7 +34,9 @@ public class Philosopher implements Runnable {
    private void think() {
       System.out.println("Philosopher" + num + " is thinking...");
       try {
-         Thread.sleep((long) (Math.random() * 1000));
+         Random rand = new Random();
+         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
+         Thread.sleep(sleepDuration);
       } catch (InterruptedException e) {
          e.printStackTrace();
       }
@@ -42,7 +46,9 @@ public class Philosopher implements Runnable {
    private void eat() {
       System.out.println("Philosopher" + num + " is eating...");
       try {
-         Thread.sleep((long) (Math.random() * 1000));
+         Random rand = new Random();
+         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
+         Thread.sleep(sleepDuration);
       } catch (InterruptedException e) {
          e.printStackTrace();
       }
