@@ -8,11 +8,6 @@
 
 public class DiningPhilosophers {
    public static void main(String args[]) {
-      /*
-       * pseudocode
-       * Philosopher call takeForks
-       * philosopher call returnForks
-       */
       int numPhils = 5;
       DiningServer diningServer = new DiningServerImpl(numPhils);
 
