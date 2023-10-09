@@ -8,13 +8,18 @@
 
 public class DiningPhilosophers {
    public static void main(String args[]) {
+      /*
+       * pseudocode
+       * Philosopher call takeForks
+       * philosopher call returnForks
+       */
       int numPhils = 5;
       DiningServer diningServer = new DiningServerImpl(numPhils);
 
-      Philosopher[] philosophers = new Philosopher[numPhils];
+      Thread[] philosophers = new Thread[numPhils];
       for (int i = 0; i < numPhils; i++) {
-         philosophers[i] = new Philosopher(i, diningServer);
-         philosophers[i].run();
+         philosophers[i] = new Thread(new Philosopher(i, diningServer));
+         philosophers[i].start();
       }
    }
 }
