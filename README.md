@@ -6,3 +6,4 @@ Philosopher class
 Dining Server Interface
 Dining Server Implementation
 press run
+check that there is no deadlock by seeing output at most only two philosophers are eating and are only eating when there is two forks available adjacent to them
