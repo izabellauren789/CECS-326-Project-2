@@ -13,9 +13,9 @@ public class DiningServerImpl implements DiningServer {
 	public DiningServerImpl() { 
 		forks = new Semaphore[5];
 		for (int i = 0; i < 5; i++) {
-			forks[i] = new Semaphore(1);
+			forks[i] = new Semaphore(2);
 		}
-		mutex = new Semaphore(1);
+		mutex = new Semaphore(2);
 	}
 
 	public void takeForks(int philID) {

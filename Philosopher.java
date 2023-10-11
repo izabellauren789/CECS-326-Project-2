@@ -10,25 +10,22 @@ public class Philosopher implements Runnable {
    /*
     * lock for thinking and eating
     */
-   private int num;
    private DiningServer diningServer;
-   private int maxIterations;
-   private int currentIteration = 0;
+   private int num;
 
-   public Philosopher(int num, DiningServer diningServer, int maxIteration) {
-      this.num = num;
+   public Philosopher(int num, DiningServer diningServer) {
       this.diningServer = diningServer;
-      this.maxIterations = maxIterations;
    }
 
    @Override
    public void run() {
-      while (currentIteration < maxIterations) {
+      int i = 0;
+      while (i < 5) {
          think();
          diningServer.takeForks(num);
          eat();
          diningServer.returnForks(num);
-         currentIteration++;
+         i++;
 
       }
    }
