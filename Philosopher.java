@@ -8,8 +8,6 @@ import java.util.Random;
 
 public class Philosopher implements Runnable {
    /*
-    * pseudocode
-    * each thread sleep for random period between 1 and 3
     * lock for thinking and eating
     */
    private int num;
@@ -22,11 +20,13 @@ public class Philosopher implements Runnable {
 
    @Override
    public void run() {
-      while (true) {
+      int i = 0;
+      while( i < 5) {
          think();
          diningServer.takeForks(num);
          eat();
          diningServer.returnForks(num);
+         i++;
       }
    }
 
