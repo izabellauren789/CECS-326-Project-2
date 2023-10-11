@@ -12,34 +12,32 @@ public class DiningServerImpl implements DiningServer {
 
 	public DiningServerImpl(int numPhils) { 
 		forks = new Semaphore[numPhils];
-		for (int i = 0; i < numPhils; i++) {//  numPhils 5
-			forks[i] = new Semaphore(2); //1 threads at a time
-			System.out.println("Philosopher" + i + "made");
-
+		for (int i = 0; i < numPhils; i++) {
+			forks[i] = new Semaphore(1);
 		}
-		mutex = new Semaphore(2); //whats 
+		mutex = new Semaphore(1);
 	}
 
-	public void takeForks(int philID) { 
+	public void takeForks(int philID) {
 		try {
 			mutex.acquire();
 			forks[philID].acquire();
 			forks[(philID + 1) % forks.length].acquire();
 			mutex.release();
 			System.out.println("Philosopher" + philID + " takes fork.");
-		
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void returnForks(int philID) { 
+	public void returnForks(int philID) {
 		try {
 			mutex.acquire();
 			forks[philID].release();
 			forks[(philID + 1) % forks.length].release();
 			mutex.release();
-			System.out.println("Philosopher" + philID + " takes fork.");
+			System.out.println("Philosopher" + philID + " returns fork.");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
