@@ -23,7 +23,6 @@ public class Philosopher implements Runnable {
 
    @Override
    public void run() {
-      int i = 0;
       while (currentIteration < maxIterations) {
          think();
          diningServer.takeForks(num);
