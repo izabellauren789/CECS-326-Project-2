@@ -6,8 +6,10 @@
  */
 public interface DiningServer {
    // called by a philosopher when they wish to eat
-   void takeForks(int philID);
+   void takeForks(/* int philID */);
 
    // called by a philosopher when they are finished eating
-   void returnForks(int philID);
+   void returnForks(/* int philID */);
+
+   boolean isFree();
 }
