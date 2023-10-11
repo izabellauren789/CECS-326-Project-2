@@ -14,7 +14,7 @@ public class DiningPhilosophers {
       Thread[] philosophers = new Thread[numPhils];
       for (int i = 0; i < numPhils; i++) { // simulate the dining table
          philosophers[i] = new Thread(new Philosopher(i, diningServer));
-         philosophers[i].start(); // the tread starts
+         philosophers[i].start(); // the thread starts
          // dont we need an end thread type thing here?
       }
    }
