@@ -32,7 +32,6 @@ public class Philosopher implements Runnable {
 
    // philosopher thinking method
    private void think() {
-      System.out.println("Philosopher" + num + " is thinking...");
       try {
          Random rand = new Random();
          int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
@@ -44,7 +43,6 @@ public class Philosopher implements Runnable {
 
    // philosopher eating method
    private void eat() {
-      System.out.println("Philosopher" + num + " is eating...");
       try {
          Random rand = new Random();
          int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
