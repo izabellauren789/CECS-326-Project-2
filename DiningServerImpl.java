@@ -10,9 +10,9 @@ public class DiningServerImpl implements DiningServer {
 	private Semaphore[] forks;
 	private Semaphore mutex;
 
-	public DiningServerImpl(int numPhils) { 
-		forks = new Semaphore[numPhils];
-		for (int i = 0; i < numPhils; i++) {
+	public DiningServerImpl() { 
+		forks = new Semaphore[5];
+		for (int i = 0; i < 5; i++) {
 			forks[i] = new Semaphore(1);
 		}
 		mutex = new Semaphore(1);
