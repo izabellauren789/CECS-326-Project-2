@@ -15,6 +15,7 @@ public class Philosopher implements Runnable {
 
    public Philosopher(int num, DiningServer diningServer) {
       this.diningServer = diningServer;
+      this.num = num;
    }
 
    @Override
