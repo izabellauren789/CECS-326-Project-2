@@ -13,6 +13,10 @@ public class Philosopher implements Runnable {
    private DiningServer diningServer;
    private int num;
 
+   public Random rand = new Random();
+   public int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
+
+
    public Philosopher(int num, DiningServer diningServer) {
       this.diningServer = diningServer;
       this.num = num;
@@ -22,9 +26,9 @@ public class Philosopher implements Runnable {
    public void run() {
       int i = 0;
       while (i < 5) {
-         think();
+         think(i);
          diningServer.takeForks(num);
-         eat();
+         eat(i);
          diningServer.returnForks(num);
          i++;
 
@@ -32,24 +36,23 @@ public class Philosopher implements Runnable {
    }
 
    // philosopher thinking method
-   private void think() {
+   private void think(int philID) {
       try {
-         Random rand = new Random();
-         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
          Thread.sleep(sleepDuration);
       } catch (InterruptedException e) {
          e.printStackTrace();
       }
+      System.out.println("philo" + philID+ " think");
    }
 
    // philosopher eating method
-   private void eat() {
+   private void eat(int philID) {
       try {
-         Random rand = new Random();
-         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
          Thread.sleep(sleepDuration);
       } catch (InterruptedException e) {
          e.printStackTrace();
       }
+      System.out.println("philo" + philID+ " eat");
+
    }
 }
