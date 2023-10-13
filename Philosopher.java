@@ -10,7 +10,6 @@ import java.util.concurrent.CountDownLatch;
 public class Philosopher implements Runnable {
    // philosopher's unique id
    private int id;
-
    // Controls when a philosopher can pick up forks
    private DiningServerImpl monitor;
 
@@ -25,7 +24,6 @@ public class Philosopher implements Runnable {
       this.monitor = monitor;
       this.countDownLatch = countDownLatch;
    }
-
    /**
     * Repeatedly think, pick up forks, eat and put down forks
     */
