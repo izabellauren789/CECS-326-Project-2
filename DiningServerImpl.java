@@ -1,45 +1,83 @@
 
 /**
  * DiningServer.java
- * This class contains the methods called by the  philosophers.
+ * This class contains the methods called by the philosophers.
  */
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CountDownLatch;
 
 public class DiningServerImpl implements DiningServer {
-	private Semaphore[] forks;
-	private Semaphore mutex;
+	// The states of the philosoper can be in any of these
+	private enum State {
+		THINKING, HUNGRY, EATING
+	};
 
-	public DiningServerImpl() { 
-		forks = new Semaphore[5];
-		for (int i = 0; i < 5; i++) {
-			forks[i] = new Semaphore(2);
+	// The state of each philosopher
+	private State[] philstate;
+
+	// keeps track to see if all philosophers eat at least once
+	private int[] mealsEaten;
+	private CountDownLatch countDownLatch;
+	private static final int numMeals = 5;
+
+	/**
+	 * Creates a monitor for the number of philosophers passed
+	 */
+	public DiningServerImpl(int numPhilosophers, CountDownLatch countDownLatch, int numMeals) {
+		philstate = new State[numPhilosophers];
+		mealsEaten = new int[numPhilosophers];
+		for (int i = 0; i < numPhilosophers; i++) {
+			philstate[i] = State.THINKING;
+			mealsEaten[i] = 0;
 		}
-		mutex = new Semaphore(2);
+		this.countDownLatch = countDownLatch;
 	}
 
-	public void takeForks(int philID) {
-		try {
-			mutex.acquire();
-			forks[philID].acquire();
-			forks[(philID + 1) % forks.length].acquire();
-			mutex.release();
-			System.out.println("Philosopher" + philID + " takes fork.");
+	/**
+	 * A philosopher picks up both forks, waits if either of its neighbors
+	 * is eating
+	 */
+	public synchronized void pickUp(int philosopherId) throws InterruptedException {
+		philstate[philosopherId] = State.HUNGRY;
+		System.out.println("Philosopher " + philosopherId + " is hungry... is waiting to eat.");
+		System.out.flush();
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		while (neighborEating(philosopherId)) {
+			wait();
 		}
+
+		philstate[philosopherId] = State.EATING;
+		System.out.println("Philosopher " + philosopherId + " has both forks and is eating...");
+		System.out.flush();
 	}
 
-	public void returnForks(int philID) {
-		try {
-			mutex.acquire();
-			forks[philID].release();
-			forks[(philID + 1) % forks.length].release();
-			mutex.release();
-			System.out.println("Philosopher" + philID + " returns fork.");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	/**
+	 * Return true if some neighbor is currently eating
+	 */
+	private boolean neighborEating(int philosopherId) {
+		int numPhilosophers = philstate.length;
+		if (philstate[(philosopherId + 1) % numPhilosophers] == State.EATING) {
+			return true;
 		}
+
+		if (philstate[(philosopherId + numPhilosophers - 1) % numPhilosophers] == State.EATING) {
+			return true;
+		}
+
+		return false;
 	}
+
+	/**
+	 * Put down both forks. Notify all waiting philosophers
+	 */
+	public synchronized void putDown(int philosopherId) throws InterruptedException {
+		philstate[philosopherId] = State.THINKING;
+		mealsEaten[philosopherId]++;
+		if (mealsEaten[philosopherId] >= numMeals) {
+			countDownLatch.countDown();
+		}
+		System.out.println("Philosopher " + philosopherId + " puts down forks.");
+		notifyAll();
+	}
+
 }

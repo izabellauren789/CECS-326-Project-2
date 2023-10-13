@@ -1,3 +1,4 @@
+
 /**
  * DiningPhilosophers.java
  *
@@ -5,17 +6,28 @@
  * Project 2
  *
  */
+import java.util.concurrent.CountDownLatch;
 
 public class DiningPhilosophers {
-   public static void main(String args[]) {
-      int numPhils = 5; // total number of philosoophers --> we know its 5
-      DiningServer diningServer = new DiningServerImpl();
+   private static final int numphils = 5;
+   private static final int numMeals = 5;
 
-      Thread[] philosophers = new Thread[numPhils];
-      for (int i = 0; i < numPhils; i++) { // simulate the dining table
-         philosophers[i] = new Thread(new Philosopher(i, diningServer));
-         philosophers[i].start(); // the tread starts
-         // dont we need an end thread type thing here?
+   public static void main(String args[]) {
+      Philosopher[] philosophers = new Philosopher[numphils];
+      CountDownLatch countDownLatch = new CountDownLatch(numphils);
+
+      // Monitors ensure that the philosophers pick up forks at the same time
+      DiningServerImpl monitor = new DiningServerImpl(numphils, countDownLatch, numMeals);
+      for (int i = 0; i < numphils; i++) {
+         philosophers[i] = new Philosopher(i, monitor, countDownLatch);
+         new Thread(philosophers[i]).start();
+      }
+      try {
+         countDownLatch.await(); // Wait for all philosophers to finish their meals
+         System.out.println("Everyone Eats!");
+         System.exit(0);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
       }
    }
 }

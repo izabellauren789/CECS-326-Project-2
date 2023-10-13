@@ -5,51 +5,64 @@
  * Philosophers alternate between eating and thinking.
  */
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 public class Philosopher implements Runnable {
-   /*
-    * lock for thinking and eating
+   // philosopher's unique id
+   private int id;
+
+   // Controls when a philosopher can pick up forks
+   private DiningServerImpl monitor;
+
+   // tracks which philosophers have successfully eaten
+   private CountDownLatch countDownLatch;
+
+   /**
+    * Contruct a new philosopher
     */
-   private DiningServer diningServer;
-   private int num;
-
-   public Philosopher(int num, DiningServer diningServer) {
-      this.diningServer = diningServer;
-      this.num = num;
+   public Philosopher(int id, DiningServerImpl monitor, CountDownLatch countDownLatch) {
+      this.id = id;
+      this.monitor = monitor;
+      this.countDownLatch = countDownLatch;
    }
 
-   @Override
+   /**
+    * Repeatedly think, pick up forks, eat and put down forks
+    */
    public void run() {
-      int i = 0;
-      while (i < 5) {
-         think();
-         diningServer.takeForks(num);
-         eat();
-         diningServer.returnForks(num);
-         i++;
-
-      }
-   }
-
-   // philosopher thinking method
-   private void think() {
       try {
-         Random rand = new Random();
-         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
-         Thread.sleep(sleepDuration);
+         while (true) {
+            think(id);
+            monitor.pickUp(id);
+            eat(id);
+            monitor.putDown(id);
+            countDownLatch.countDown();
+         }
       } catch (InterruptedException e) {
-         e.printStackTrace();
+         System.out.println("Philosopher " + id + " was interrupted.\n");
       }
    }
 
-   // philosopher eating method
-   private void eat() {
-      try {
-         Random rand = new Random();
-         int sleepDuration = rand.nextInt(3000) + 1000; // Random sleep between 1 and 3 seconds
-         Thread.sleep(sleepDuration);
-      } catch (InterruptedException e) {
-         e.printStackTrace();
-      }
+   /**
+    * Sleep for a random amount to time between 1 and 3 to model thinking
+    */
+   public void think(int id) throws InterruptedException {
+      System.out.println("Philosopher " + id + " is thinking.");
+      System.out.flush();
+      Random numGenerator = new Random();
+      int sleepTime = numGenerator.nextInt(2001) + 1000; // Generates a random number between 1000 (1 second) and 3000
+                                                         // (3 seconds)
+      Thread.sleep(sleepTime);
    }
+
+   /**
+    * Sleep for a random amount of time between 1 and 3 to model eating
+    */
+   public void eat(int id) throws InterruptedException {
+      Random numGenerator = new Random();
+      int sleepTime = numGenerator.nextInt(2001) + 1000; // Generates a random number between 1000 (1 second) and 3000
+                                                         // (3 seconds)
+      Thread.sleep(sleepTime);
+   }
+
 }
