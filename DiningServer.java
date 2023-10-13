@@ -5,11 +5,8 @@
  * You are flexible to change it, here only display a sample
  */
 public interface DiningServer {
-   // called by a philosopher when they wish to eat
-   void takeForks(/* int philID */);
+   void pickUp(int philID) throws InterruptedException;
 
-   // called by a philosopher when they are finished eating
-   void returnForks(/* int philID */);
+   void putDown(int philID) throws InterruptedException;
 
-   boolean isFree();
 }
